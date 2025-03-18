@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заметки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .editor-container {
+            width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            resize: vertical;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.25s ease-in-out;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="editor-container">
+    <textarea id="textEditor"></textarea>
+    <button onclick="saveText()">Сохранить</button>
+    <button onclick="editText()">Редактировать</button>
+</div>
+<script>
+    function saveText() {
+        const text = document.getElementById('textEditor').value;
+        fetch('/save-text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text })
+        }).then(response => response.json())
+          .then(data => alert("Текст сохранён!"));
+    }
+    
+    function editText() {
+        fetch('/get-text')
+            .then(response => response.json())
+            .then(data => {
+                if (data.text) {
+                    document.getElementById('textEditor').value = data.text;
+                } else {
+                    alert("Нет сохранённого текста.");
+                }
+            });
+    }
+</script>
+</body>
+</html>
