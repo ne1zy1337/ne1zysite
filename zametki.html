@@ -50,30 +50,29 @@
     <button onclick="editText()">Редактировать</button>
 </div>
      <a href="index.html">Назад</a>
-<script>
-    function saveText() {
-        const text = document.getElementById('textEditor').value;
-        fetch('/save-text', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ text })
-        }).then(response => response.json())
-          .then(data => alert("Текст сохранён!"));
-    }
-    
-    function editText() {
-        fetch('/get-text')
-            .then(response => response.json())
-            .then(data => {
-                if (data.text) {
-                    document.getElementById('textEditor').value = data.text;
-                } else {
-                    alert("Нет сохранённого текста.");
-                }
-            });
-    }
-</script>
+ <script>
+        // Функция для сохранения данных в Local Storage
+        function saveData() {
+            var inputValue = document.getElementById("myInput").value;
+            localStorage.setItem("savedData", inputValue);
+            document.getElementById("output").innerHTML = "Data saved!";
+        }
+
+        // Функция для загрузки данных из Local Storage
+        function loadData() {
+            var savedData = localStorage.getItem("savedData");
+            if (savedData) {
+                document.getElementById("myInput").value = savedData;
+                document.getElementById("output").innerHTML = "Data loaded: " + savedData;
+            } else {
+                document.getElementById("output").innerHTML = "No data found.";
+            }
+        }
+
+        // Загрузка данных при загрузке страницы
+        window.onload = function () {
+            loadData();
+        };
+    </script>
 </body>
 </html>
