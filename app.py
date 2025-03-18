@@ -1,28 +1,28 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 import os
 
 app = Flask(__name__)
 
-# Файл для хранения текста
-TEXT_FILE = 'saved_text.txt'
+# Путь к файлу для хранения текста
+TEXT_FILE_PATH = 'saved_text.txt'
 
 @app.route('/')
 def index():
-    return app.send_static_file('zametki.html')
+    return render_template('zametki.html')
 
-@app.route('/save-text', methods=['POST'])
+@app.route('/save', methods=['POST'])
 def save_text():
-    text = request.json['text']
-    with open(TEXT_FILE, 'w') as f:
-        f.write(text)
+    data = request.get_json()
+    with open(TEXT_FILE_PATH, 'w') as file:
+        file.write(data['text'])
     return jsonify({'message': 'Текст успешно сохранён!'})
 
-@app.route('/get-text')
-def get_text():
+@app.route('/load')
+def load_text():
     try:
-        with open(TEXT_FILE, 'r') as f:
-            saved_text = f.read()
-        return jsonify({'text': saved_text})
+        with open(TEXT_FILE_PATH, 'r') as file:
+            text = file.read()
+        return jsonify({'text': text})
     except FileNotFoundError:
         return jsonify({})
 
