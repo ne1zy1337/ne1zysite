@@ -8,7 +8,7 @@ TEXT_FILE = 'saved_text.txt'
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    return app.send_static_file('zametki.html')
 
 @app.route('/save-text', methods=['POST'])
 def save_text():
