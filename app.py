@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify
+from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect(app) 
 import json
 from db import *
 
