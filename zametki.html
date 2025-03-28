@@ -1,100 +1,73 @@
+# Редактор Заметок
+
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Заметки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВАШИ ЗАМЕТКИ</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
+            background: linear-gradient(to right, #800080, #DA70D6);
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
+            color: white;
             text-align: center;
+            padding: 50px;
         }
-        form {
-            max-width: 600px;
-            margin: auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        textarea {
-            width: 100%;
-            min-height: 200px;
-            resize: vertical;
+        #noteField {
+            width: 300px;
+            height: 150px;
+            background-color: #b866ff;
+            border: none;
+            border-radius: 5px;
             padding: 10px;
-            margin-bottom: 15px;
-        }
-        select {
-            width: 150px;
-            margin-right: 10px;
+            margin-bottom: 20px;
         }
         button {
+            background-color: #78DBE2;
+            color: white;
+            border: none;
+            border-radius: 5px;
             padding: 10px 20px;
             cursor: pointer;
         }
-        .note-text {
-            white-space: pre-wrap;
-            word-break: break-word;
-            padding: 10px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
+        button:hover {
+            background-color: #78DBE2;
         }
     </style>
 </head>
 <body>
-    <h1>Редактор заметок</h1>
-    <form action="/save-note" method="post">
-        <label for="note-title">Название заметки:</label>
-        <input type="text" id="note-title" name="title" required>
 
-        <label for="note-content">Содержание заметки:</label>
-        <textarea id="note-content" name="content" required></textarea>
+    <h1>Мои заметки</h1>
+    <textarea id="noteField" readonly></textarea><br>
+    <button id="editButton">Редактировать заметку</button>
+    <button id="saveButton">Сохранить заметку</button>
 
-        <label for="note-color">Цвет текста:</label>
-        <select id="note-color" name="color">
-            <option value="black">Черный</option>
-            <option value="blue">Синий</option>
-            <option value="green">Зеленый</option>
-            <option value="red">Красный</option>
-        </select>
-
-        <button type="submit">Сохранить заметку</button>
-    </form>
-
-    <div id="notes-container"></div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function() {
-            $.get("/get-notes", function(notes) {
-                notes.forEach(note => {
-                    let noteDiv = $('<div>', {class: 'note'});
-                    let titleSpan = $('<span>', {class: 'note-title', text: note.title});
-                    let contentSpan = $('<span>', {class: 'note-content', text: note.content, style: `color: ${note.color}`});
-                    let editButton = $('<button>', {class: 'edit-button', text: 'Редактировать'});
-                    let deleteButton = $('<button>', {class: 'delete-button', text: 'Удалить'});
+        let noteField = document.getElementById('noteField');
+        let editButton = document.getElementById('editButton');
+        let saveButton = document.getElementById('saveButton');
 
-                    noteDiv.append(titleSpan, contentSpan, editButton, deleteButton);
-                    $('#notes-container').append(noteDiv);
+        // Load saved note from local storage
+        window.onload = function() {
+            let savedNote = localStorage.getItem('note');
+            if (savedNote) {
+                noteField.value = savedNote;
+            }
+        };
 
-                    editButton.click(function() {
-                        console.log('Редактируем заметку:', note.id);
-                        // Логика редактирования заметки
-                    });
+        // Enable editing of the note
+        editButton.onclick = function() {
+            noteField.readOnly = false;
+            noteField.focus();
+        };
 
-                    deleteButton.click(function() {
-                        console.log('Удаляем заметку:', note.id);
-                        // Логика удаления заметки
-                    });
-                });
-            });
-        });
+        // Save the note to local storage
+        saveButton.onclick = function() {
+            localStorage.setItem('note', noteField.value);
+            noteField.readOnly = true;
+        };
     </script>
+
 </body>
 </html>
