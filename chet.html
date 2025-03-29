@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Счет/Отсчет события</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Счет/Отсчет события</h1>
+    <input type="date" id="eventDate" required>
+    <input type="text" id="eventName" placeholder="Event Name" required>
+    <select id="countdownType">
+        <option value="countdownTo">Сколько до</option>
+        <option value="countdownFrom">Сколько после</option>
+    </select>
+    <button onclick="saveEvent()">Сохранить</button>
+    <button onclick="checkEvent()">Посмотреть</button>
+    <div id="result"></div>
+
+    <script>
+        function saveEvent() {
+            const date = document.getElementById('eventDate').value;
+            const name = document.getElementById('eventName').value;
+            const type = document.getElementById('countdownType').value;
+            const eventData = { date, name, type };
+            localStorage.setItem('eventData', JSON.stringify(eventData));
+            alert('Event saved!');
+        }
+
+        function checkEvent() {
+            const eventData = JSON.parse(localStorage.getItem('eventData'));
+            if (!eventData) {
+                alert('No event found!');
+                return;
+            }
+            const today = new Date();
+            const eventDate = new Date(eventData.date);
+            let result;
+            if (eventData.type === 'countdownTo') {
+                const daysLeft = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+                result = daysLeft >= 0 ? `${daysLeft} days left until ${eventData.name}` : `${-daysLeft} days since ${eventData.name}`;
+            } else {
+                const daysPassed = Math.ceil((today - eventDate) / (1000 * 60 * 60 * 24));
+                result = `${daysPassed} days since ${eventData.name}`;
+            }
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
+
