@@ -8,7 +8,7 @@
     <title>ВАШИ ЗАМЕТКИ</title>
     <style>
         body {
-            background: linear-gradient(to right, #800080, #DA70D6);
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             font-family: Arial, sans-serif;
             color: white;
             text-align: center;
@@ -17,14 +17,14 @@
         #noteField {
             width: 300px;
             height: 150px;
-            background-color: #b866ff;
+            background-color: #00aaff;
             border: none;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 20px;
         }
         button {
-            background-color: #78DBE2;
+            background-color: #00aaff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -32,7 +32,7 @@
             cursor: pointer;
         }
         button:hover {
-            background-color: #78DBE2;
+            background-color: #00aaff;
         }
     </style>
 </head>
@@ -42,7 +42,31 @@
     <textarea id="noteField" readonly></textarea><br>
     <button id="editButton">Редактировать заметку</button>
     <button id="saveButton">Сохранить заметку</button>
+<title>Return Button</title>
+    <style>
+        .return-button {
+            background: linear-gradient(to right, #00aaff, #0044cc);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
 
+        .return-button:hover {
+            background: linear-gradient(to right, #0044cc, #00aaff);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="return-button">На главную</a>
     <script>
         let noteField = document.getElementById('noteField');
         let editButton = document.getElementById('editButton');
